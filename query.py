@@ -16,7 +16,7 @@ vectorstore = Chroma(
     persist_directory="chroma_db",
     embedding_function=embeddings
 )
-retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
+retriever = vectorstore.as_retriever(search_kwargs={"k": 8})
 
 # Set up the LLM
 llm = ChatAnthropic(
