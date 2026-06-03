@@ -1,10 +1,6 @@
 # Clinical NLP RAG Assistant
 
-A retrieval-augmented generation (RAG) pipeline for querying a curated corpus of clinical NLP and ambient documentation research. Built with LangChain, ChromaDB, and the Anthropic Claude API.
-
-## Overview
-
-This system enables natural language Q&A over seven peer-reviewed and preprint papers covering ambient clinical documentation, automatic speech recognition (ASR), clinical NLP evaluation, and physician burnout. The knowledge base was curated to reflect the core technical and clinical problems that ambient AI documentation tools — such as Abridge, Suki, and Nuance DAX — are designed to solve.
+Seven peer-reviewed and preprint papers on ambient AI documentation + a LangChain, ChromaDB, and Claude RAG pipeline = a conversational tool for accessing clinical NLP research without digging through the literature yourself.
 
 ## Knowledge Base
 
@@ -22,18 +18,42 @@ This system enables natural language Q&A over seven peer-reviewed and preprint p
 
 - **LangChain** — orchestration and LCEL chain
 - **ChromaDB** — local vector store
-- **HuggingFace sentence-transformers** — `all-MiniLM-L6-v2` embeddings (local, free)
+- **HuggingFace sentence-transformers** — all-MiniLM-L6-v2 embeddings (local, free)
 - **Anthropic Claude** — answer generation
 - **pypdf** — PDF ingestion
+- **Docker** — containerized deployment
 
 ## Setup
+
+### Option 1 — Docker (recommended)
+
+```bash
+git clone https://github.com/joshthrelkeld/clinical-nlp-rag.git
+cd clinical-nlp-rag
+```
+
+Create a `.env` file in the project root:
+ANTHROPIC_API_KEY=your_key_here
+
+Add your PDFs to a `data/` folder, then run ingestion:
+```bash
+docker build -t clinical-nlp-rag .
+docker run -it --env-file .env -v $(pwd)/data:/app/data -v $(pwd)/chroma_db:/app/chroma_db clinical-nlp-rag python ingest.py
+```
+
+Start the query interface:
+```bash
+docker run -it --env-file .env -v $(pwd)/data:/app/data -v $(pwd)/chroma_db:/app/chroma_db clinical-nlp-rag
+```
+
+### Option 2 — Local
 
 ```bash
 git clone https://github.com/joshthrelkeld/clinical-nlp-rag.git
 cd clinical-nlp-rag
 python3 -m venv venv
 source venv/bin/activate
-pip install langchain langchain-anthropic langchain-community langchain-chroma langchain-huggingface chromadb pypdf sentence-transformers "numpy<2" "transformers==4.44.0" python-dotenv
+pip install -r requirements.txt
 ```
 
 Create a `.env` file in the project root:
