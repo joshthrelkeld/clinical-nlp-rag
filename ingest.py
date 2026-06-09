@@ -5,6 +5,9 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 import json
+# Purely cosmetic. When LangChain releases the standalone package for PyPDF, this will be fixed
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 load_dotenv()
 
